@@ -13,6 +13,7 @@ struct StepOne: View {
     @State var selection: Int? = nil
     @State var myExercises: [SelectedExercise] = []
     @State private var showingAlert = false
+    @State private var showingNameAlert = false
     @Binding var rootIsActive : Bool
     
     var body: some View {
@@ -49,10 +50,13 @@ struct StepOne: View {
                 .background(Color.init(UIColor(named: "SecondaryColor")!))
                 .clipShape(Capsule())
                 .simultaneousGesture(TapGesture().onEnded{
+                    let userDefaults = UserDefaults.standard
                     if routineName == "" {
                         showingAlert = true
                     } else if myExercises.count == 0 {
                         showingAlert = true
+                    } else if userDefaults.object(forKey: routineName) != nil{
+                        showingNameAlert = true
                     } else {
                         selection = 1
                     }
@@ -61,6 +65,9 @@ struct StepOne: View {
                 .alert(isPresented: $showingAlert) {
                     Alert(title: Text("Mensaje Importante"), message: Text("Para continuar debe elegir un nombre para la rutina y al menos un ejercicio"), dismissButton: .default(Text("Aceptar")))
                 } // Fin del alert
+                .alert(isPresented: $showingNameAlert) {
+                    Alert(title: Text("Mensaje Importante"), message: Text("Ya existe una rutina con este nombre"), dismissButton: .default(Text("Aceptar")))
+                } // Fin Alert
         } // Fin VStack
         .navigationBarTitle("Paso 1", displayMode: .inline)
     } // Fin body

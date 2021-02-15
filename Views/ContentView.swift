@@ -8,8 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var selection: Tab = .createRoutines
+
+    enum Tab {
+        case createRoutines
+        case myRoutines
+    }
+    
     var body: some View {
-        NewRoutineHome()
+        TabView(selection: $selection) {
+            NewRoutineHome()
+                .tabItem {
+                    Label("Nueva rutina", systemImage: "plus.circle")
+                }
+                .tag(Tab.createRoutines)
+            MyRoutinesList()
+                .tabItem {
+                    Label("Mis rutinas", systemImage: "list.bullet")
+                }
+                .tag(Tab.myRoutines)
+        }
     }
 }
 

@@ -23,8 +23,8 @@ struct StepTwo: View {
             }
             
             Button(action: {
-                // Guardar en base de datos
-                print(myExercises[0].reps)
+                RoutinesHandler.saveRoutine(name: routineName, exercises: myExercises)
+                RoutinesHandler.saveRoutineName(name: routineName)
                 shouldPopToRootView = false
             }, label: {
                 Text("Terminar")
