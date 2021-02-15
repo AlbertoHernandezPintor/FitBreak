@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NewRoutineHome: View {
-    @State var selection: Int? = nil
+    @State var isActive : Bool = false
     
     var body: some View {
         NavigationView {
@@ -27,10 +27,7 @@ struct NewRoutineHome: View {
                         .resizable()
                         .frame(width: 120, height: 120)
                     
-                    NavigationLink(destination: StepOne(), tag: 1, selection: $selection) {
-                        Button(action: {
-                            self.selection = 1
-                        }, label: {
+                    NavigationLink(destination: StepOne(rootIsActive: $isActive).environmentObject(ModelData()), isActive: $isActive) {
                             Text("Crear rutina")
                                 .foregroundColor(.white)
                                 .font(.title2)
@@ -38,8 +35,7 @@ struct NewRoutineHome: View {
                                 .overlay(Capsule().stroke(Color.white, lineWidth: 4))
                                 .background(Color.init(UIColor(named: "SecondaryColor")!))
                                 .clipShape(Capsule())
-                        }) // Fin Button
-                        .padding(.top, 50)
+                                .padding(50)
                     } // Fin NavigationLink
                 } // Fin VStack
             } // Fin ZStack
@@ -53,5 +49,6 @@ struct NewRoutineHome: View {
 struct NewRoutineHome_Previews: PreviewProvider {
     static var previews: some View {
         NewRoutineHome()
+            .environmentObject(ModelData())
     }
 }
