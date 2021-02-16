@@ -19,7 +19,7 @@ class RoutinesHandler {
         var myRoutines = [String:[SelectedExercise]]()
         
         if let routinesName = usersDefaults.array(forKey: "allRoutinesName") {
-            for (key, value) in usersDefaults.dictionaryRepresentation() {
+            for (key, _) in usersDefaults.dictionaryRepresentation() {
                 for name in routinesName {
                     if key == name as! String {
                         let exercisesData = usersDefaults.data(forKey: key)
@@ -40,6 +40,19 @@ class RoutinesHandler {
             usersDefaults.setValue(routinesName, forKey: "allRoutinesName")
         } else {
             usersDefaults.setValue([name], forKey: "allRoutinesName")
+        }
+    }
+    
+    static func deleteRoutine(nameRoutine: String) {
+        let usersDefaults = UserDefaults.standard
+        usersDefaults.removeObject(forKey: nameRoutine)
+        
+        if var routinesName = usersDefaults.array(forKey: "allRoutinesName") {
+            for (index, element) in routinesName.enumerated() {
+                if nameRoutine == element as! String {
+                    routinesName.remove(at: index)
+                }
+            }
         }
     }
 }

@@ -35,7 +35,7 @@ struct NewRoutineHome: View {
                                 .overlay(Capsule().stroke(Color.white, lineWidth: 4))
                                 .background(Color.init(UIColor(named: "SecondaryColor")!))
                                 .clipShape(Capsule())
-                                .padding(50)
+                                .padding()
                     } // Fin NavigationLink
                 } // Fin VStack
             } // Fin ZStack

@@ -34,7 +34,7 @@ struct CategoryItem: View {
                     .padding(.leading)
             } // Fin VStack
         } // Fin ZStack
-        .padding(.leading, 15)
+        .overlay(Rectangle().stroke(lineWidth: 2))
         .frame(width: 200, height: 300, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
         .onTapGesture {
             if color == "SecondaryColor" {

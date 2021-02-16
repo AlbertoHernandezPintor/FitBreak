@@ -26,10 +26,11 @@ struct RoutineListItem: View {
                     .font(.caption)
                     .foregroundColor(.primary)
                     .lineLimit(4)
-                    .frame(width: 180, height: 70)
+                    .frame(width: 170, height: 70)
                     .padding(.leading)
                     .padding(.top, 0)
             } // Fin VStack
+            .padding()
             
             VStack {
                 HStack {
@@ -59,6 +60,7 @@ struct RoutineListItem: View {
             .padding()
             Divider()
         } // Fin HStack
+        .overlay(Rectangle().stroke(lineWidth: 2))
     } // Fin body
 }
 

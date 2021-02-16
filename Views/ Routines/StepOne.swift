@@ -12,7 +12,6 @@ struct StepOne: View {
     @State var routineName: String = ""
     @State var selection: Int? = nil
     @State var myExercises: [SelectedExercise] = []
-    @State private var showingAlert = false
     @State private var showingNameAlert = false
     @Binding var rootIsActive : Bool
     
@@ -34,6 +33,7 @@ struct StepOne: View {
                     CategoryRow(categoryName: exercise.title, items: exercise.exercises, myExercises: $myExercises)
                 }
                 .frame(height: 320)
+                .padding()
                 .listRowInsets(EdgeInsets())
             }
             .padding(.top, 30)
@@ -51,22 +51,15 @@ struct StepOne: View {
                 .clipShape(Capsule())
                 .simultaneousGesture(TapGesture().onEnded{
                     let userDefaults = UserDefaults.standard
-                    if routineName == "" {
-                        showingAlert = true
-                    } else if myExercises.count == 0 {
-                        showingAlert = true
-                    } else if userDefaults.object(forKey: routineName) != nil{
+                    if routineName == "" || myExercises.count == 0  || userDefaults.object(forKey: routineName) != nil{
                         showingNameAlert = true
                     } else {
                         selection = 1
                     }
                 })
                 .padding(.top, 30)
-                .alert(isPresented: $showingAlert) {
-                    Alert(title: Text("Mensaje Importante"), message: Text("Para continuar debe elegir un nombre para la rutina y al menos un ejercicio"), dismissButton: .default(Text("Aceptar")))
-                } // Fin del alert
                 .alert(isPresented: $showingNameAlert) {
-                    Alert(title: Text("Mensaje Importante"), message: Text("Ya existe una rutina con este nombre"), dismissButton: .default(Text("Aceptar")))
+                    Alert(title: Text("Mensaje Importante"), message: Text("Ya existe una rutina con este nombre o no ha introducido el nombre o ningún ejercicio"), dismissButton: .default(Text("Aceptar")))
                 } // Fin Alert
         } // Fin VStack
         .navigationBarTitle("Paso 1", displayMode: .inline)

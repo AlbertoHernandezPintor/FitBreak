@@ -24,10 +24,12 @@ struct CategoryRow: View {
                     ForEach(items, id: \.self) { exercise in
                         CategoryItem(exercise: exercise, myExercises: $myExercises)
                     }
+                    .padding()
                 }
             }
             .frame(height: 185)
             .padding(.top, 50)
+            .padding(.bottom, 50)
         } // Fin VStack
     }
 }
