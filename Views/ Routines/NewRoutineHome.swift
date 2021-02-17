@@ -27,7 +27,7 @@ struct NewRoutineHome: View {
                         .resizable()
                         .frame(width: 120, height: 120)
                     
-                    NavigationLink(destination: StepOne(rootIsActive: $isActive).environmentObject(ModelData()), isActive: $isActive) {
+                    NavigationLink(destination: StepOne(myExercises: [], isEdit: false, rootIsActive: $isActive).environmentObject(ModelData()), isActive: $isActive) {
                             Text("Crear rutina")
                                 .foregroundColor(.white)
                                 .font(.title2)
@@ -39,9 +39,9 @@ struct NewRoutineHome: View {
                     } // Fin NavigationLink
                 } // Fin VStack
             } // Fin ZStack
-            .navigationTitle("Crear nueva rutina")
-            .navigationBarHidden(true)
             .edgesIgnoringSafeArea(.all)
+            .navigationTitle("Crear rutina")
+            .navigationBarHidden(true)
         } // Fin NavigationView
     } // Fin body
 } // Fin View

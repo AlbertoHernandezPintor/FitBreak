@@ -11,7 +11,7 @@ class RoutinesHandler {
     static func saveRoutine(name: String, exercises: [SelectedExercise]) {
         let usersDefaults = UserDefaults.standard
         let exercisesData = try! JSONEncoder().encode(exercises)
-        usersDefaults.set(exercisesData, forKey: name)
+        usersDefaults.set(exercisesData, forKey: name.uppercased())
     }
     
     static func loadMyRoutines()->[String:[SelectedExercise]] {
@@ -36,23 +36,25 @@ class RoutinesHandler {
     static func saveRoutineName(name: String) {
         let usersDefaults = UserDefaults.standard
         if var routinesName = usersDefaults.array(forKey: "allRoutinesName") {
-            routinesName += [name]
+            routinesName += [name.uppercased()]
             usersDefaults.setValue(routinesName, forKey: "allRoutinesName")
         } else {
-            usersDefaults.setValue([name], forKey: "allRoutinesName")
+            usersDefaults.setValue([name.uppercased()], forKey: "allRoutinesName")
         }
     }
     
     static func deleteRoutine(nameRoutine: String) {
         let usersDefaults = UserDefaults.standard
-        usersDefaults.removeObject(forKey: nameRoutine)
-        
+    
         if var routinesName = usersDefaults.array(forKey: "allRoutinesName") {
             for (index, element) in routinesName.enumerated() {
                 if nameRoutine == element as! String {
                     routinesName.remove(at: index)
+                    usersDefaults.setValue(routinesName, forKey: "allRoutinesName")
                 }
             }
         }
+        
+        usersDefaults.removeObject(forKey: nameRoutine)
     }
 }

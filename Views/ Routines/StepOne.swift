@@ -11,9 +11,13 @@ struct StepOne: View {
     @EnvironmentObject var modelData: ModelData
     @State var routineName: String = ""
     @State var selection: Int? = nil
-    @State var myExercises: [SelectedExercise] = []
+    @State var myExercises: [SelectedExercise]
     @State private var showingNameAlert = false
+    @State var isEdit: Bool
     @Binding var rootIsActive : Bool
+    @State var editName = ""
+    @State var finishEdit: Bool = false
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack {
@@ -38,7 +42,7 @@ struct StepOne: View {
             }
             .padding(.top, 30)
             
-            NavigationLink(destination: StepTwo(myExercises: myExercises, routineName: routineName, shouldPopToRootView: $rootIsActive), tag: 1, selection: $selection) {
+            NavigationLink(destination: StepTwo(myExercises: myExercises, routineName: routineName, editName: editName, shouldPopToRootView: $rootIsActive, isEdit: isEdit, finishEdit: $finishEdit), tag: 1, selection: $selection) {
                 EmptyView()
             } // Fin NavigationLink
             
@@ -51,8 +55,12 @@ struct StepOne: View {
                 .clipShape(Capsule())
                 .simultaneousGesture(TapGesture().onEnded{
                     let userDefaults = UserDefaults.standard
-                    if routineName == "" || myExercises.count == 0  || userDefaults.object(forKey: routineName) != nil{
-                        showingNameAlert = true
+                    if routineName == "" || myExercises.count == 0  || userDefaults.object(forKey: routineName.uppercased()) != nil{
+                        if isEdit && editName.uppercased() == routineName.uppercased() && myExercises.count > 0 {
+                            selection = 1
+                        } else {
+                            showingNameAlert = true
+                        }
                     } else {
                         selection = 1
                     }
@@ -63,12 +71,22 @@ struct StepOne: View {
                 } // Fin Alert
         } // Fin VStack
         .navigationBarTitle("Paso 1", displayMode: .inline)
+        .padding()
+        .onAppear(perform: {
+            if isEdit {
+                editName = routineName
+            }
+            
+            if finishEdit {
+                presentationMode.wrappedValue.dismiss()
+            }
+        })
     } // Fin body
 } // Fin StepOne
 
 struct StepOne_Previews: PreviewProvider {
     static var previews: some View {
-        StepOne(rootIsActive: .constant(false))
+        StepOne(myExercises: [], isEdit: false, rootIsActive: .constant(false))
             .environmentObject(ModelData())
     }
 }

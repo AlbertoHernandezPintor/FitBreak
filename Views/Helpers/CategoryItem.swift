@@ -54,6 +54,15 @@ struct CategoryItem: View {
                 myExercises += [selected]
             }
         }
+        .onAppear(perform: {
+            if myExercises.count > 0{
+                for currentExercise in myExercises {
+                    if currentExercise.title == exercise.title {
+                        color = "SecondaryColor"
+                    }
+                }
+            }
+        })
     }
 }
 

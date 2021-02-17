@@ -10,7 +10,12 @@ import SwiftUI
 struct StepTwo: View {
     @State var myExercises: [SelectedExercise]
     @State var routineName: String
+    @State var editName: String
     @Binding var shouldPopToRootView : Bool
+    @State var isEdit: Bool
+    @Environment(\.presentationMode) var presentationMode
+    @Binding var finishEdit: Bool
+    @State var showEditAlert = false
     
     var body: some View {
         VStack {
@@ -23,8 +28,17 @@ struct StepTwo: View {
             }
             
             Button(action: {
-                RoutinesHandler.saveRoutine(name: routineName, exercises: myExercises)
-                RoutinesHandler.saveRoutineName(name: routineName)
+                if isEdit {
+                    finishEdit = true
+                    RoutinesHandler.deleteRoutine(nameRoutine: editName)
+                    RoutinesHandler.saveRoutine(name: routineName, exercises: myExercises)
+                    RoutinesHandler.saveRoutineName(name: routineName)
+                    showEditAlert = true
+                    presentationMode.wrappedValue.dismiss()
+                } else {
+                    RoutinesHandler.saveRoutine(name: routineName, exercises: myExercises)
+                    RoutinesHandler.saveRoutineName(name: routineName)
+                }
                 shouldPopToRootView = false
             }, label: {
                 Text("Terminar")
@@ -36,8 +50,12 @@ struct StepTwo: View {
                     .clipShape(Capsule())
             }) // Fin Button
             .padding(.top, 30)
+            .alert(isPresented: $showEditAlert) {
+                Alert(title: Text("Mensaje Importante"), message: Text("Rutina editada con exito"), dismissButton: .default(Text("Aceptar")))
+            } // Fin Alert
         } // Fin VStack
         .navigationBarTitle("Paso 2", displayMode: .inline)
+        .padding()
     } // Fin body
 }
 
@@ -45,7 +63,7 @@ struct StepTwo_Previews: PreviewProvider {
     static var exercisesExample: [SelectedExercise] = []
     
     static var previews: some View {
-        StepTwo(myExercises: exercisesExample, routineName: "Mi rutina", shouldPopToRootView: .constant(false))
+        StepTwo(myExercises: exercisesExample, routineName: "Mi rutina", editName: "Prueba", shouldPopToRootView: .constant(false), isEdit: false, finishEdit: .constant(false))
             .environmentObject(ModelData())
     }
 }
