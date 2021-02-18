@@ -13,6 +13,7 @@ struct ContentView: View {
     enum Tab {
         case createRoutines
         case myRoutines
+        case weather
     }
     
     var body: some View {
@@ -27,6 +28,11 @@ struct ContentView: View {
                     Label("Mis rutinas", systemImage: "list.bullet")
                 }
                 .tag(Tab.myRoutines)
+            Weather()
+                .tabItem {
+                    Label("Tiempo", systemImage: "cloud.sun.fill")
+                }
+                .tag(Tab.weather)
         }
     }
 }
