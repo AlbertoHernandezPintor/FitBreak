@@ -24,6 +24,8 @@ class WeatherViewController: UIViewController {
         
         tableView.reloadData()
         
+        WeatherHandler.updateMyWeather()
+        
         let userDefaults = UserDefaults.standard
         userDefaults.addObserver(self, forKeyPath: "myWeather", options: NSKeyValueObservingOptions.new, context: nil)
         userDefaults.synchronize()
@@ -44,7 +46,7 @@ class WeatherViewController: UIViewController {
                 if city != "" && country != "" {
                     cityTextField.text = ""
                     countryTextField.text = ""
-                    WeatherHandler.getWeatherAtLocation(city: city, country: country)
+                    WeatherHandler.getWeatherAtLocation(city: city, country: country, isSearching: true)
                 } else {
                     let uiAlertController = UIAlertController(title: "Datos introducidos",
                                                             message: "Es obligatario introducir una ciudad y un país",
@@ -82,7 +84,31 @@ extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
         let customCell = tableView.dequeueReusableCell(withIdentifier: "ListCell", for: indexPath)
         if let cell = customCell as? WeatherListTableViewCell {
             let weather = WeatherHandler.loadMyWeather()
-            cell.city.text = weather[indexPath.row].city
+            cell.city.text = weather[indexPath.row].city + " - " + weather[indexPath.row].country
+            
+            let maxTemp = floor((weather[indexPath.row].dailyForecasts.temperature.maximum.value - 32) * 5 / 9)
+            cell.maxTemp.text = "\(maxTemp)" + " ºC"
+            
+            let minTemp = floor((weather[indexPath.row].dailyForecasts.temperature.minimum.value - 32) * 5 / 9)
+            cell.minTemp.text = "\(minTemp)" + " ºC"
+            
+            if weather[indexPath.row].dailyForecasts.day.hasPrecipitation {
+                if weather[indexPath.row].dailyForecasts.day.precipitationType == "Rain" {
+                    if weather[indexPath.row].dailyForecasts.day.precipitationIntensity == "Light" {
+                        cell.precipitation.image = UIImage(systemName: "cloud.drizzle")
+                    } else {
+                        cell.precipitation.image = UIImage(systemName: "cloud.heavyrain")
+                    }
+                } else if weather[indexPath.row].dailyForecasts.day.precipitationType == "Snow" {
+                    if weather[indexPath.row].dailyForecasts.day.precipitationIntensity == "Light" {
+                        cell.precipitation.image = UIImage(systemName: "cloud.sleet")
+                    } else {
+                        cell.precipitation.image = UIImage(systemName: "cloud.snow")
+                    }
+                }
+            } else {
+                cell.precipitation.image = UIImage(systemName: "sun.max")
+            }
 
             return cell
         } else {
@@ -90,7 +116,47 @@ extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 130
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = self.delete(indexPath: indexPath)
+        
+        let swipe = UISwipeActionsConfiguration(actions: [delete])
+        
+        return swipe
+    }
+    
+    private func delete(indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .destructive, title: "Borrar") {
+            [weak self] (_, _, _) in
+            guard let self = self else {return}
+            
+            let deleteAlert = UIAlertController(title: "Alerta de borrado",
+                                                    message: "¿Está seguro?",
+                                             preferredStyle: .alert)
+            
+            let cancelAction = UIAlertAction(title: "Cancelar",
+                                         style: .cancel,
+                                       handler: {(action)->Void in})
+            
+            let deleteAction = UIAlertAction(title: "Borrar",
+                                         style: .destructive,
+                                       handler: {(action)->Void in
+                                        WeatherHandler.deleteWeather(index: indexPath.row)
+                                       })
+            
+            deleteAlert.addAction(cancelAction)
+            deleteAlert.addAction(deleteAction)
+            
+            self.present(deleteAlert, animated: true, completion: nil)
+        }
+        
+        return action
     }
 }

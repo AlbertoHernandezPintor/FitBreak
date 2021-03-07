@@ -10,13 +10,13 @@ import Alamofire
 
 class WeatherHandler {
     
-    static func getWeatherAtLocation(city: String, country: String) {
+    static func getWeatherAtLocation(city: String, country: String, isSearching: Bool) {
         ApiManager().getLocationId(location: city) { (result) in
             switch result {
                 case let .success(locations):
                     if locations.count > 0 {
                         let key = getCityInCountry(locations: locations, country: country)
-                       searchWeatherInLocation(key: key, country: country, city: city)
+                       searchWeatherInLocation(key: key, country: country, city: city, isSearching: isSearching)
                     }
                 case let .failure(error):
                     print(error)
@@ -37,23 +37,27 @@ class WeatherHandler {
         
     }
     
-    static func searchWeatherInLocation(key: String, country: String, city: String) {
+    static func searchWeatherInLocation(key: String, country: String, city: String, isSearching: Bool) {
         // Llamamos a la API para conseguir el tiempo de la localización
         ApiManager().getWeather(key: key) { (result) in
             switch result {
                 case let .success(weather):
-                    saveNewWeather(dailyForecast: weather.dailyForecasts[0], country: country, city: city)
+                    saveNewWeather(dailyForecast: weather.dailyForecasts[0], country: country, city: city, key: key)
+                    
+                    if isSearching {
+                        Notifications.showNotification(title: "Nueva localización añadida", subtitle: "Ya puede visualizar el tiempo")
+                    }
                 case let .failure(error):
                     print(error)
             }
         }
     }
     
-    static func saveNewWeather(dailyForecast: DailyForecast, country: String, city: String) {
+    static func saveNewWeather(dailyForecast: DailyForecast, country: String, city: String, key: String) {
         let usersDefaults = UserDefaults.standard
         var index = 0
         
-        let weather = NewWeather(dailyForecasts: dailyForecast, country: country, city: city)
+        let weather = NewWeather(dailyForecasts: dailyForecast, country: country, city: city, key: key)
         
         if usersDefaults.object(forKey: "myWeather") != nil {
             let myWeather = usersDefaults.data(forKey: "myWeather")
@@ -87,5 +91,23 @@ class WeatherHandler {
         }
         
         return weatherDecode
+    }
+    
+    static func updateMyWeather() {
+        let myWeather = loadMyWeather()
+        
+        for weather in myWeather {
+            searchWeatherInLocation(key: weather.key, country: weather.country, city: weather.city, isSearching: false)
+        }
+    }
+    
+    static func deleteWeather(index: Int) {
+        let usersDefaults = UserDefaults.standard
+        let myWeather = usersDefaults.data(forKey: "myWeather")
+        var weatherDecode = try! JSONDecoder().decode([NewWeather].self, from: myWeather!)
+        
+        weatherDecode.remove(at: index)
+        let newWeather = try! JSONEncoder().encode(weatherDecode)
+        usersDefaults.set(newWeather, forKey: "myWeather")
     }
 }

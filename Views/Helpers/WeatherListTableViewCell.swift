@@ -11,6 +11,9 @@ class WeatherListTableViewCell: UITableViewCell {
 
     
     @IBOutlet weak var city: UILabel!
+    @IBOutlet weak var maxTemp: UILabel!
+    @IBOutlet weak var minTemp: UILabel!
+    @IBOutlet weak var precipitation: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

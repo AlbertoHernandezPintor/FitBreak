@@ -14,6 +14,7 @@ struct ContentView: View {
         case createRoutines
         case myRoutines
         case weather
+        case nearlyPlaces
     }
     
     var body: some View {
@@ -23,16 +24,24 @@ struct ContentView: View {
                     Label("Nueva rutina", systemImage: "plus.circle")
                 }
                 .tag(Tab.createRoutines)
+            
             MyRoutinesList()
                 .tabItem {
                     Label("Mis rutinas", systemImage: "list.bullet")
                 }
                 .tag(Tab.myRoutines)
+            
             Weather()
                 .tabItem {
                     Label("Tiempo", systemImage: "cloud.sun.fill")
                 }
                 .tag(Tab.weather)
+            
+            NearlyPlaces()
+                .tabItem {
+                    Label("Gimnasios cercanos", systemImage: "mappin.and.ellipse")
+                }
+                .tag(Tab.nearlyPlaces)
         }
     }
 }

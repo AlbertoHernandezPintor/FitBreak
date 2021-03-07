@@ -38,6 +38,8 @@ struct StepTwo: View {
                 } else {
                     RoutinesHandler.saveRoutine(name: routineName, exercises: myExercises)
                     RoutinesHandler.saveRoutineName(name: routineName)
+                    
+                    Notifications.showNotification(title: "Nueva rutina añadida", subtitle: "Rutina lista para realizarse")
                 }
                 shouldPopToRootView = false
             }, label: {
