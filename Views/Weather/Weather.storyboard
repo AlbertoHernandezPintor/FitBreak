@@ -30,14 +30,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c1v-fR-q6Q">
-                                <rect key="frame" x="140" y="166" width="134" height="39"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                <state key="normal" title="Añadir"/>
-                                <connections>
-                                    <action selector="searchWeather" destination="0f5-tu-QXf" eventType="touchUpInside" id="aMB-k1-QQl"/>
-                                </connections>
-                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OPT-uc-Jml">
                                 <rect key="frame" x="20" y="213" width="374" height="649"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -100,6 +92,14 @@
                                     <outlet property="delegate" destination="0f5-tu-QXf" id="6cW-TS-nP1"/>
                                 </connections>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c1v-fR-q6Q">
+                                <rect key="frame" x="155" y="166" width="104" height="39"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                <state key="normal" title="Añadir"/>
+                                <connections>
+                                    <action selector="searchWeather" destination="0f5-tu-QXf" eventType="touchUpInside" id="aMB-k1-QQl"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="19i-Y6-llx"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -111,12 +111,13 @@
                             <constraint firstItem="19i-Y6-llx" firstAttribute="trailing" secondItem="nw2-Fp-Mu1" secondAttribute="trailing" constant="20" id="FTn-T0-bAJ"/>
                             <constraint firstItem="daf-2f-Q8s" firstAttribute="leading" secondItem="19i-Y6-llx" secondAttribute="leading" constant="20" id="FqO-GY-bWo"/>
                             <constraint firstItem="19i-Y6-llx" firstAttribute="trailing" secondItem="daf-2f-Q8s" secondAttribute="trailing" constant="20" id="I4r-Cv-Ycp"/>
-                            <constraint firstItem="19i-Y6-llx" firstAttribute="trailing" secondItem="c1v-fR-q6Q" secondAttribute="trailing" constant="140" id="NAS-1P-V9X"/>
                             <constraint firstItem="daf-2f-Q8s" firstAttribute="leading" secondItem="19i-Y6-llx" secondAttribute="leading" constant="20" id="QBh-VR-KtS"/>
                             <constraint firstItem="OPT-uc-Jml" firstAttribute="top" secondItem="c1v-fR-q6Q" secondAttribute="bottom" constant="8" symbolic="YES" id="QPf-nt-QQN"/>
                             <constraint firstItem="nw2-Fp-Mu1" firstAttribute="top" secondItem="daf-2f-Q8s" secondAttribute="bottom" constant="15" id="UAJ-hi-D7n"/>
                             <constraint firstItem="c1v-fR-q6Q" firstAttribute="leading" secondItem="19i-Y6-llx" secondAttribute="leading" constant="140" id="YhR-bC-yfR"/>
                             <constraint firstItem="daf-2f-Q8s" firstAttribute="leading" secondItem="19i-Y6-llx" secondAttribute="leading" constant="320" id="ejy-yO-BmE"/>
+                            <constraint firstItem="c1v-fR-q6Q" firstAttribute="leading" secondItem="19i-Y6-llx" secondAttribute="leading" constant="155" id="h4O-8Q-Xnv"/>
+                            <constraint firstItem="19i-Y6-llx" firstAttribute="trailing" secondItem="c1v-fR-q6Q" secondAttribute="trailing" constant="155" id="kcA-wp-UTP"/>
                             <constraint firstItem="nw2-Fp-Mu1" firstAttribute="leading" secondItem="19i-Y6-llx" secondAttribute="leading" constant="20" id="mtQ-gn-R9h"/>
                             <constraint firstItem="OPT-uc-Jml" firstAttribute="bottom" secondItem="19i-Y6-llx" secondAttribute="bottom" id="tE9-wa-TVI"/>
                             <constraint firstItem="daf-2f-Q8s" firstAttribute="top" secondItem="19i-Y6-llx" secondAttribute="top" constant="20" id="vw4-iI-8hZ"/>
