@@ -47,6 +47,8 @@ class WeatherViewController: UIViewController {
                     cityTextField.text = ""
                     countryTextField.text = ""
                     WeatherHandler.getWeatherAtLocation(city: city, country: country, isSearching: true)
+                    cityTextField.resignFirstResponder()
+                    countryTextField.resignFirstResponder()
                 } else {
                     let uiAlertController = UIAlertController(title: "Datos introducidos",
                                                             message: "Es obligatario introducir una ciudad y un país",

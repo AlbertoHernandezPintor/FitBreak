@@ -10,6 +10,16 @@ import UIKit
 
 class Notifications {
     
+    static func allowNotifications() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            if granted == true && error == nil {
+                print("Notifications permitted")
+            } else {
+                print("Notifications not permitted")
+            }
+        }
+    }
+    
     static func showNotification(title: String, subtitle: String) {
         let content = UNMutableNotificationContent()
         content.title = title
